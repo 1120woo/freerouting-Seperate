@@ -1,5 +1,7 @@
 package app.freerouting.gui;
 
+import java.io.FilenameFilter;
+
 import app.freerouting.datastructures.FileFilter;
 import app.freerouting.designforms.specctra.RulesFile;
 import app.freerouting.logger.FRLogger;
@@ -60,6 +62,7 @@ public class DesignFile {
     if (curr_design_file == null) {
       return null;
     }
+    System.out.println(curr_design_file);
     result = new DesignFile(curr_design_file, file_chooser);
 
     return result;
@@ -155,9 +158,14 @@ public class DesignFile {
     final java.util.ResourceBundle resources =
         java.util.ResourceBundle.getBundle(
             "app.freerouting.gui.BoardMenuFile", p_board_frame.get_locale());
-    String[] file_name_parts = this.get_name().split("\\.", 2);
+    String[] file_name_parts = this.get_name().split("\\.");
     String design_name = file_name_parts[0];
-
+    if(file_name_parts.length > 1){
+      for(int i = 1; i < file_name_parts.length-1; i++){
+        design_name += '.';
+        design_name += file_name_parts[i];
+      }
+    }
     if (this.file_chooser == null) {
       String design_dir_name;
       if (this.output_file == null) {
@@ -225,9 +233,14 @@ public class DesignFile {
         java.util.ResourceBundle.getBundle(
             "app.freerouting.gui.BoardMenuFile", p_board_frame.get_locale());
     String design_file_name = this.get_name();
-    String[] file_name_parts = design_file_name.split("\\.", 2);
+    String[] file_name_parts = design_file_name.split("\\.");
     String design_name = file_name_parts[0];
-
+    if(file_name_parts.length > 1){
+      for(int i = 1; i < file_name_parts.length-1; i++){
+        design_name += '.';
+        design_name += file_name_parts[i];
+      }
+    }
     {
       String output_file_name = design_name + ".ses";
       FRLogger.info("Saving '" + output_file_name + "'...");
@@ -296,8 +309,14 @@ public class DesignFile {
     java.io.InputStream input_stream =
         new java.io.ByteArrayInputStream(session_output_stream.toByteArray());
 
-    String[] file_name_parts = design_file_name.split("\\.", 2);
+    String[] file_name_parts = design_file_name.split("\\.");
     String design_name = file_name_parts[0];
+    if(file_name_parts.length > 1){
+      for(int i = 1; i < file_name_parts.length-1; i++){
+        design_name += '.';
+        design_name += file_name_parts[i];
+      }
+    }
     String output_file_name = design_name + ".scr";
     FRLogger.info("Saving '" + output_file_name + "'...");
 

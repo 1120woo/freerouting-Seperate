@@ -39,7 +39,7 @@ public class Component extends ScopeKeyword {
       throws java.io.IOException {
     p_par.file.start_scope();
     p_par.file.write("place ");
-    p_par.file.new_line();
+    // p_par.file.new_line();
     p_par.identifier_type.write(p_component.name, p_par.file);
     if (p_component.is_placed()) {
       double[] coor =

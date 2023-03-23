@@ -6,9 +6,6 @@ def get_java_version():
     javaPath = 'java'
 
     javaInfo = subprocess.check_output(javaPath + ' -version', shell=True, stderr=subprocess.STDOUT)
-    javaVersions = [re.search(r'([0-9\._]+)', v).group(1).replace('"', '') for v in javaInfo.decode().splitlines()]
-    print(javaVersions)
-    for v in javaVersions:
-        if v.split(".")[0].isdigit():
-            print(v)
-            return
+    print(javaInfo.decode().splitlines()[0])
+    javaVersion = re.search(r'([0-9\._]+)', javaInfo.decode().splitlines()[0]).group(1).replace('"', '')
+    print(javaVersion)

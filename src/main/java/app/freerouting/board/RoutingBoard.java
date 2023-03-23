@@ -1006,6 +1006,7 @@ public class RoutingBoard extends BasicBoard implements java.io.Serializable {
             p_stoppable_thread,
             p_time_limit,
             false);
+    System.out.println("INIT ARE");
     AutorouteEngine.AutorouteResult result =
         curr_autoroute_engine.autoroute_connection(
             route_start_set, route_dest_set, ctrl_settings, ripped_item_list);
@@ -1248,7 +1249,7 @@ public class RoutingBoard extends BasicBoard implements java.io.Serializable {
   }
 
   /**
-   * Tries to educe the nets of traces and vias, so that the nets are a subset of the nets of the
+   * Tries to reduce the nets of traces and vias, so that the nets are a subset of the nets of the
    * contact items. This is applied to traces and vias with more than 1 net connected to tie pins.
    * Returns true, if the nets of some items were reduced.
    */

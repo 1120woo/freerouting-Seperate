@@ -37,8 +37,8 @@ public class DsnFile {
         keyword_ok = (curr_token == Keyword.OPEN_BRACKET);
       } else if (i == 1) {
         keyword_ok = (curr_token == Keyword.PCB_SCOPE);
-        scanner.yybegin(SpecctraDsnFileReader.NAME); // to overread the name of the pcb for i = 2
-      }
+        scanner.yybegin(SpecctraDsnFileReader.NAME); // to overread the name of the pcb for i = 2        validate header
+      } 
       if (!keyword_ok) {
         FRLogger.warn(
             "DsnFile.read: the input file is not in a Specctra DSN file format. It must be a text file starting with the '(pcb' character array.");
@@ -48,7 +48,7 @@ public class DsnFile {
     ReadScopeParameter read_scope_par =
         new ReadScopeParameter(
             scanner, p_board_handling, p_observers, p_item_id_no_generator, p_test_level);
-    boolean read_ok = Keyword.PCB_SCOPE.read_scope(read_scope_par);
+    boolean read_ok = Keyword.PCB_SCOPE.read_scope(read_scope_par);     //read board?
     ReadResult result;
     if (read_ok) {
       result = ReadResult.OK;

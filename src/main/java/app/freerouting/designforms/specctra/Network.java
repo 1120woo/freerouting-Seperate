@@ -29,8 +29,8 @@ public class Network extends ScopeKeyword {
     for (int i = 1; i <= p_par.board.rules.nets.max_net_no(); ++i) {
       Net.write_scope(p_par, p_par.board.rules.nets.get(i), board_pins);
     }
-    write_via_infos(p_par.board.rules, p_par.file, p_par.identifier_type);
-    write_via_rules(p_par.board.rules, p_par.file, p_par.identifier_type);
+    // write_via_infos(p_par.board.rules, p_par.file, p_par.identifier_type);
+    // write_via_rules(p_par.board.rules, p_par.file, p_par.identifier_type);
     write_net_classes(p_par);
     p_par.file.end_scope();
   }

@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Set;
 
 /** Central connection class between the graphical user interface and the board database. */
-public class BoardHandling extends BoardHandlingHeadless {
+public class BoardHandling extends BoardHandlingHeadless implements java.io.Serializable{
 
   /** The text message fields displayed on the screen */
   public final ScreenMessages screen_messages;
@@ -1130,9 +1130,7 @@ public class BoardHandling extends BoardHandlingHeadless {
     }
     board.generate_snapshot();
     this.interactive_action_thread = InteractiveActionThread.get_batch_autorouter_instance(this);
-
     this.interactive_action_thread.start();
-
     return this.interactive_action_thread;
   }
 

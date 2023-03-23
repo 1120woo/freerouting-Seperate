@@ -54,9 +54,12 @@ public class BatchAutorouterThread extends InteractiveActionThread {
       boolean saved_board_read_only = hdlg.is_board_read_only();
       hdlg.set_board_read_only(true);
       boolean ratsnest_hidden_before = hdlg.get_ratsnest().is_hidden();
+      
       if (!ratsnest_hidden_before) {
         hdlg.get_ratsnest().hide();
       }
+
+      // AUto Route process
 
       FRLogger.info("Starting auto-routing...");
       FRLogger.traceEntry("BatchAutorouterThread.thread_action()-autorouting");
@@ -82,6 +85,10 @@ public class BatchAutorouterThread extends InteractiveActionThread {
           "Auto-routing was completed in "
               + FRLogger.formatDuration(autoroutingSecondsToComplete)
               + ".");
+
+
+      // Optimize Routing Board
+
 
       int num_threads = hdlg.get_num_threads();
       if (num_threads > 0) {

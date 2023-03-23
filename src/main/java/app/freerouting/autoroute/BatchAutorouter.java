@@ -307,6 +307,9 @@ public class BatchAutorouter {
     }
   }
 
+
+
+  
   private void remove_tails(Item.StopConnectionOption p_stop_connection_option) {
     routing_board.start_marking_changed_area();
     routing_board.remove_trace_tails(-1, p_stop_connection_option);

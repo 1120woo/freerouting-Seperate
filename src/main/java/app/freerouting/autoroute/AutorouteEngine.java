@@ -124,6 +124,7 @@ public class AutorouteEngine {
             e);
       }
     }
+    
     LocateFoundConnectionAlgo autoroute_result = null;
     if (search_result != null) {
       try {
@@ -155,6 +156,7 @@ public class AutorouteEngine {
       }
       return AutorouteResult.ALREADY_CONNECTED;
     }
+
     // Delete the ripped  connections.
     SortedSet<Item> ripped_connections = new TreeSet<>();
     Set<Integer> changed_nets = new TreeSet<>();

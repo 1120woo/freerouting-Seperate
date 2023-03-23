@@ -32,12 +32,12 @@ public class BoardFrame extends WindowBase {
   private final javax.swing.JToolBar select_toolbar;
   /** The panel with the message line */
   private final BoardPanelStatus message_panel;
-  private final TestLevel test_level;
+  final TestLevel test_level;
   private final boolean help_system_used;
   private final boolean confirm_cancel;
   private final java.util.ResourceBundle resources;
-  private final BoardObservers board_observers;
-  private final app.freerouting.datastructures.IdNoGenerator item_id_no_generator;
+  final BoardObservers board_observers;
+  final app.freerouting.datastructures.IdNoGenerator item_id_no_generator;
   WindowAbout about_window = null;
   WindowRouteParameter route_parameter_window = null;
   WindowAutorouteParameter autoroute_parameter_window = null;

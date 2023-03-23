@@ -21,7 +21,7 @@ public class BoardHandlingHeadless implements IBoardHandling {
   /** The current settings for interactive actions on the board */
   public Settings settings = null;
   /** The board database used in this interactive handling. */
-  protected RoutingBoard board = null;
+  public RoutingBoard board = null;
   protected java.util.Locale locale;
   protected boolean save_intermediate_stages;
   protected float optimization_improvement_threshold;

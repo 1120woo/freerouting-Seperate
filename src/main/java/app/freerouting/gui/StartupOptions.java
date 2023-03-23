@@ -7,17 +7,26 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class StartupOptions {
-  boolean single_design_option = false;
+  boolean non_gui_option = false;
+ 
+  boolean single_design_option = true;
   boolean test_version_option = false;
   boolean show_help_option = false;
   boolean session_file_option = false;
   boolean webstart_option = false;
-  String design_input_filename = null;
+
+  String design_input_filename2 = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_EDA_BLEdimmer_2023-02-17.dsn";
+  // String design_input_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_STM32F103VE_Board_JX V1.0-PCB nonroute_2023-02-16.dsn";
+  String design_input_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test.dsn";
+
+  // String design_input_filename2 = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test_2023-03-21.dsn";
+
   String design_output_filename = null;
+  // String design_output_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test-autoroute22.dsn";
   String design_rules_filename = null;
   String design_input_directory_name = null;
   int max_passes = 99999;
-  //int num_threads = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
+  // int num_threads = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
   int num_threads = 1;
   BoardUpdateStrategy board_update_strategy = BoardUpdateStrategy.GREEDY;
   String hybrid_ratio = "1:1";
