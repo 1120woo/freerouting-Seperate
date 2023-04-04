@@ -65,7 +65,7 @@ public class RouteApp {
             java.io.ObjectInputStream object_stream = new java.io.ObjectInputStream(input_stream);
             recv_frame.board_panel.board_handling.read_design(object_stream, TestLevel.RELEASE_VERSION);
           }
-
+          sendedBoard = recv_frame.board_panel.board_handling.board;
           if (recv_frame.board_panel.board_handling.get_routing_board() != null) {      
 
             FRLogger.traceEntry("Batch Auto Route");

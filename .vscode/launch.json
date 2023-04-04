@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "RouteApp",
-            "request": "launch",
-            "mainClass": "app.freerouting.gui.RouteApp",
-            "projectName": "freerouting"
-        },
-        {
-            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -23,7 +16,14 @@
             "request": "launch",
             "mainClass": "app.freerouting.gui.MainApplication",
             "projectName": "freerouting",
-            "vmArgs": "-Xmx512m"
+            // "args": "-inc GND"
+        },
+        {
+            "type": "java",
+            "name": "RouteApp",
+            "request": "launch",
+            "mainClass": "app.freerouting.gui.RouteApp",
+            "projectName": "freerouting"
         }
     ]
 }

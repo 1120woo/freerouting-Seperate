@@ -17,7 +17,7 @@ public class UndoableObjects implements java.io.Serializable {
   /**
    * The entries of this map are of type UnduableObject, the keys of type UndoableObjects.Storable.
    */
-  private final ConcurrentMap<Storable, UndoableObjectNode> objects;
+  public final ConcurrentMap<Storable, UndoableObjectNode> objects;
   /** the current undo level */
   private int stack_level;
   /**
@@ -41,6 +41,10 @@ public class UndoableObjects implements java.io.Serializable {
   public Iterator<UndoableObjectNode> start_read_object() {
     Collection<UndoableObjectNode> object_list = objects.values();
     return object_list.iterator();
+  }
+
+  public Collection<UndoableObjectNode> get_objects(){
+    return objects.values();
   }
 
   /**

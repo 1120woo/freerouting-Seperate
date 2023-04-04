@@ -959,6 +959,10 @@ public abstract class Item
     return autoroute_info;
   }
 
+  public boolean is_autoroute_info(){
+    return autoroute_info != null;
+  }
+
   /** Gets the information for the autoroute algorithm. */
   public app.freerouting.autoroute.ItemAutorouteInfo get_autoroute_info_pur() {
     return autoroute_info;

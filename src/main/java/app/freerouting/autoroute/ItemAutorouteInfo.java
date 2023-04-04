@@ -8,7 +8,8 @@ import app.freerouting.logger.FRLogger;
 public class ItemAutorouteInfo {
   private final Item item;
   /** Defines, if this item belongs to the start or destination set of the maze search algorithm */
-  private boolean start_info;
+  private boolean start_info = false;
+  private boolean dest_info = false;
   private Connection precalculated_connnection = null;
   /** ExpansionRoom for pushing or ripping the this object for each tree shape. */
   private ObstacleExpansionRoom[] expansion_room_arr;
@@ -25,12 +26,28 @@ public class ItemAutorouteInfo {
     return start_info;
   }
 
+    /**
+   * Looks, if the corresponding item belongs to the start or destination set of the autoroute
+   * algorithm. Only used, if the item belongs to the net, which will be currently routed.
+   */
+  public boolean is_dest_info() {
+    return dest_info;
+  }
+
   /**
    * Sets, if the corresponding item belongs to the start or destination set of the autoroute
    * algorithm. Only used, if the item belongs to the net, which will be currently routed.
    */
   public void set_start_info(boolean p_value) {
     start_info = p_value;
+  }
+
+    /**
+   * Sets, if the corresponding item belongs to the start or destination set of the autoroute
+   * algorithm. Only used, if the item belongs to the net, which will be currently routed.
+   */
+  public void set_dest_info(boolean p_value) {
+    dest_info = p_value;
   }
 
   /** Returns the precalculated connection of this item or null, if it is not yet precalculated. */

@@ -233,7 +233,7 @@ public class MazeSearchAlgo {
 
     if (list_element.door instanceof TargetItemExpansionDoor) {
       TargetItemExpansionDoor curr_door = (TargetItemExpansionDoor) list_element.door;
-      if (curr_door.is_destination_door()) {
+      if (curr_door.is_destination_door() ) {
         // The destination is reached.
         this.destination_door = curr_door;
         this.section_no_of_destination_door = list_element.section_no_of_door;
@@ -970,6 +970,7 @@ public class MazeSearchAlgo {
       Item curr_item = it.next();
       ItemAutorouteInfo curr_info = curr_item.get_autoroute_info();
       curr_info.set_start_info(false);
+      curr_info.set_dest_info(true);
       for (int i = 0; i < curr_item.tree_shape_count(this.search_tree); ++i) {
         TileShape curr_tree_shape = curr_item.get_tree_shape(this.search_tree, i);
         if (curr_tree_shape != null) {
@@ -1044,6 +1045,12 @@ public class MazeSearchAlgo {
         if (curr_door.is_destination_door()) {
           continue;
         }
+        
+        if(curr_door.item.is_autoroute_info()&&!curr_door.item.get_autoroute_info().is_start_info()){
+          System.out.println(":AAAA");
+          continue;
+        }
+
         TileShape connection_shape =
             ((Connectable) curr_door.item)
                 .get_trace_connection_shape(search_tree, curr_door.tree_entry_no);

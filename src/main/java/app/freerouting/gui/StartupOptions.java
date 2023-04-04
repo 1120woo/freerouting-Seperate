@@ -15,17 +15,18 @@ public class StartupOptions {
   boolean session_file_option = false;
   boolean webstart_option = false;
 
-  String design_input_filename2 = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_EDA_BLEdimmer_2023-02-17.dsn";
-  // String design_input_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_STM32F103VE_Board_JX V1.0-PCB nonroute_2023-02-16.dsn";
-  String design_input_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test.dsn";
+  String design_input_filename2 = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_EDA_BLEdimmer_2023-02-17.dsn";
+  // String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_STM32F103VE_Board_JX V1.0-PCB nonroute_2023-02-16.dsn";
+  String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_STM32F103VE_Board-C.dsn";
+  // String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\PCB_STM_Kicad.dsn";
 
-  // String design_input_filename2 = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test_2023-03-21.dsn";
+  // String design_input_filename2 = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_test_2023-03-21.dsn";
 
   String design_output_filename = null;
-  // String design_output_filename = "C:\\Users\\1120w\\OneDrive\\바탕 화면\\autoroute\\Autorouter_PCB_test-autoroute22.dsn";
+  // String design_output_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_test-autoroute22.dsn";
   String design_rules_filename = null;
   String design_input_directory_name = null;
-  int max_passes = 99999;
+  int max_passes = 500;
   // int num_threads = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
   int num_threads = 1;
   BoardUpdateStrategy board_update_strategy = BoardUpdateStrategy.GREEDY;
@@ -35,7 +36,7 @@ public class StartupOptions {
   java.util.Locale current_locale = java.util.Locale.getDefault();
   boolean save_intermediate_stages = false;
   // this value is equivalent to the setting of "-oit 0.001"
-  float optimization_improvement_threshold = 0.00001f;
+  float optimization_improvement_threshold = 0.001f;
   String[] ignore_net_classes_by_autorouter = new String[0];
   boolean disable_logging_option = false;
 

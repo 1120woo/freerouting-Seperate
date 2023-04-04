@@ -5,6 +5,7 @@ import app.freerouting.autoroute.ItemSelectionStrategy;
 import app.freerouting.board.TestLevel;
 import app.freerouting.board.RoutingBoard;
 import app.freerouting.designforms.specctra.DsnFile;
+import app.freerouting.datastructures.UndoableObjects;
 // import app.freerouting.constants.Constants;
 import app.freerouting.interactive.InteractiveActionThread;
 import app.freerouting.interactive.ThreadActionListener;
@@ -22,21 +23,24 @@ import java.util.Locale;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import app.freerouting.gui.TcpSocket;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import java.util.*;
+import app.freerouting.board.*;
+
 /** Main application for creating frames with new or existing board designs. */
 public class MainApplication extends WindowBase {
   static final String WEB_FILE_BASE_NAME = "http://www.freerouting.app";
-  static final String VERSION_NUMBER_STRING =
-      "v"
-          + 1
-          + " (build-date: "
-          + 0214
-          + ")";
+  static final String VERSION_NUMBER_STRING = "v"
+      + 1
+      + " (build-date: "
+      + 0214
+      + ")";
   private static final TestLevel DEBUG_LEVEL = TestLevel.CRITICAL_DEBUGGING_OUTPUT;
   private final java.util.ResourceBundle resources;
   private final javax.swing.JButton demonstration_button;
@@ -60,22 +64,26 @@ public class MainApplication extends WindowBase {
   private String design_dir_name = null;
   private final int max_passes;
   private final BoardUpdateStrategy board_update_strategy;
-  // Issue: adding a new field into AutorouteSettings caused exception when loading
-  // an existing design: "Couldn't read design file", "InvalidClassException", incompatible with
+  // Issue: adding a new field into AutorouteSettings caused exception when
+  // loading
+  // an existing design: "Couldn't read design file", "InvalidClassException",
+  // incompatible with
   // serialized data
   // so choose to pass this parameter through BoardHandling
   private final String hybrid_ratio;
   private final ItemSelectionStrategy item_selection_strategy;
   private final int num_threads;
+
   /**
-   * Creates new form MainApplication It takes the directory of the board designs as optional
+   * Creates new form MainApplication It takes the directory of the board designs
+   * as optional
    * argument.
    *
    * @param startupOptions
    */
   public MainApplication(StartupOptions startupOptions) {
     super(600, 300);
-    
+
     this.design_dir_name = startupOptions.getDesignDir();
     this.max_passes = startupOptions.getMaxPasses();
     this.num_threads = startupOptions.getNumThreads();
@@ -88,8 +96,7 @@ public class MainApplication extends WindowBase {
     this.save_intermediate_stages = startupOptions.save_intermediate_stages;
     this.optimization_improvement_threshold = startupOptions.optimization_improvement_threshold;
     this.ignore_net_classes_by_autorouter = startupOptions.ignore_net_classes_by_autorouter;
-    this.resources =
-        java.util.ResourceBundle.getBundle("app.freerouting.gui.MainApplication", locale);
+    this.resources = java.util.ResourceBundle.getBundle("app.freerouting.gui.MainApplication", locale);
 
     main_panel = new javax.swing.JPanel();
     getContentPane().add(main_panel);
@@ -118,7 +125,8 @@ public class MainApplication extends WindowBase {
     setTitle(resources.getString("title") + " " + VERSION_NUMBER_STRING);
     boolean add_buttons = true;
 
-    if(!startupOptions.getWebstartOption()) FRLogger.info("startupOptions.getWebstartOption()");
+    if (!startupOptions.getWebstartOption())
+      FRLogger.info("startupOptions.getWebstartOption()");
 
     if (startupOptions.getWebstartOption()) {
 
@@ -144,8 +152,8 @@ public class MainApplication extends WindowBase {
         main_panel.add(sample_board_button, gridbag_constraints);
       }
     }
-    
-    // 보드 열기 
+
+    // 보드 열기
     open_board_button.setText(resources.getString("open_own_design"));
     open_board_button.setToolTipText(resources.getString("open_own_design_tooltip"));
     open_board_button.addActionListener(
@@ -186,9 +194,6 @@ public class MainApplication extends WindowBase {
     setResizable(false);
   }
 
-
-
-
   /**
    * Main function of the Application
    *
@@ -196,14 +201,15 @@ public class MainApplication extends WindowBase {
    */
 
   public static void main(String[] args) {
-    // we have a special case if logging must be disabled before the general command line arguments are parsed
+    // we have a special case if logging must be disabled before the general command
+    // line arguments are parsed
     if (args.length > 0 && Arrays.stream(args).anyMatch("-dl"::equals)) {
       // disable logging
       FRLogger.disableLogging();
     }
 
     FRLogger.traceEntry("MainApplication.main()");
-    
+
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException ex) {
@@ -243,9 +249,8 @@ public class MainApplication extends WindowBase {
 
     FRLogger.debug(" GUI Language: " + startupOptions.current_locale);
 
-    java.util.ResourceBundle resources =
-        java.util.ResourceBundle.getBundle(
-            "app.freerouting.gui.MainApplication", startupOptions.current_locale);
+    java.util.ResourceBundle resources = java.util.ResourceBundle.getBundle(
+        "app.freerouting.gui.MainApplication", startupOptions.current_locale);
     if (startupOptions.show_help_option) {
       System.out.print(resources.getString("command_line_help"));
       System.exit(0);
@@ -260,12 +265,10 @@ public class MainApplication extends WindowBase {
         board_option = BoardFrame.Option.SINGLE_FRAME;
       }
 
+      ////////////////////////////////// GUIGUIGUIGUI//////////////////////////////////////////////////
 
-      //////////////////////////////////GUIGUIGUIGUI//////////////////////////////////////////////////
-
-
-      FRLogger.info("Opening '" + startupOptions.design_input_filename + "'...");    //자동 불러오기
-      DesignFile design_file = DesignFile.get_instance(startupOptions.design_input_filename2, false);
+      FRLogger.info("Opening '" + startupOptions.design_input_filename + "'..."); // 자동 불러오기
+      DesignFile design_file = DesignFile.get_instance(startupOptions.design_input_filename, false);
       if (design_file == null) {
         FRLogger.warn(
             resources.getString("message_6")
@@ -275,21 +278,19 @@ public class MainApplication extends WindowBase {
                 + resources.getString("message_7"));
         return;
       }
-      
-      String message =
-          resources.getString("loading_design") + " " + startupOptions.design_input_filename;
-      WindowMessage welcome_window = WindowMessage.show(message);       //Window Show 
-      final BoardFrame new_frame =
-          create_board_frame(
-              design_file,
-              null,
-              board_option,
-              startupOptions.test_version_option,
-              startupOptions.current_locale,
-              startupOptions.design_rules_filename,
-              startupOptions.save_intermediate_stages,
-              startupOptions.optimization_improvement_threshold,
-              startupOptions.ignore_net_classes_by_autorouter);
+
+      String message = resources.getString("loading_design") + " " + startupOptions.design_input_filename;
+      WindowMessage welcome_window = WindowMessage.show(message); // Window Show
+      final BoardFrame new_frame = create_board_frame(
+          design_file,
+          null,
+          board_option,
+          startupOptions.test_version_option,
+          startupOptions.current_locale,
+          startupOptions.design_rules_filename,
+          startupOptions.save_intermediate_stages,
+          startupOptions.optimization_improvement_threshold,
+          startupOptions.ignore_net_classes_by_autorouter);
       welcome_window.dispose();
       if (new_frame == null) {
         FRLogger.warn("Couldn't create window frame");
@@ -307,45 +308,44 @@ public class MainApplication extends WindowBase {
       new_frame.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
       new_frame.board_panel.board_handling.set_item_selection_strategy(
           startupOptions.item_selection_strategy);
-          // new_frame.dispose();
+      // new_frame.dispose();
 
+      ////////////////////////////////// NONGUINONGUINONGUI//////////////////////////////////////////////////
 
-      //////////////////////////////////NONGUINONGUINONGUI//////////////////////////////////////////////////
-
-
-
-      // DesignFile design_file = DesignFile.get_instance(startupOptions.design_input_filename, false);
+      // DesignFile design_file =
+      // DesignFile.get_instance(startupOptions.design_input_filename, false);
       // final BoardFrame new_frame =
       // new BoardFrame(
-      //     design_file,
-      //     board_option,
-      //     TestLevel.RELEASE_VERSION,
-      //     startupOptions.current_locale,
-      //     !startupOptions.test_version_option,
-      //     startupOptions.save_intermediate_stages,
-      //     startupOptions.optimization_improvement_threshold);
+      // design_file,
+      // board_option,
+      // TestLevel.RELEASE_VERSION,
+      // startupOptions.current_locale,
+      // !startupOptions.test_version_option,
+      // startupOptions.save_intermediate_stages,
+      // startupOptions.optimization_improvement_threshold);
 
       // DsnFile.ReadResult read_result = null;
       // read_result =
-      //   new_frame.board_panel.board_handling.import_design(
-      //       design_file.get_input_stream(), new_frame.board_observers, new_frame.item_id_no_generator, new_frame.test_level);
-      //       new_frame.board_panel.board_handling.settings.autoroute_settings.set_stop_pass_no(
-      //         new_frame.board_panel.board_handling.settings.autoroute_settings.get_start_pass_no()
-      //             + startupOptions.max_passes
-      //             - 1);
-      //     new_frame.board_panel.board_handling.set_num_threads(startupOptions.num_threads);
-      //     new_frame.board_panel.board_handling.set_board_update_strategy(
-      //         startupOptions.board_update_strategy);
-      //     new_frame.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
-      //     new_frame.board_panel.board_handling.set_item_selection_strategy(
-      //         startupOptions.item_selection_strategy);
+      // new_frame.board_panel.board_handling.import_design(
+      // design_file.get_input_stream(), new_frame.board_observers,
+      // new_frame.item_id_no_generator, new_frame.test_level);
+      // new_frame.board_panel.board_handling.settings.autoroute_settings.set_stop_pass_no(
+      // new_frame.board_panel.board_handling.settings.autoroute_settings.get_start_pass_no()
+      // + startupOptions.max_passes
+      // - 1);
+      // new_frame.board_panel.board_handling.set_num_threads(startupOptions.num_threads);
+      // new_frame.board_panel.board_handling.set_board_update_strategy(
+      // startupOptions.board_update_strategy);
+      // new_frame.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
+      // new_frame.board_panel.board_handling.set_item_selection_strategy(
+      // startupOptions.item_selection_strategy);
 
-      //////////////////////////////////Send ROUTINGBOARD//////////////////////////////////////////////////
-
+      ////////////////////////////////// Send
+      ////////////////////////////////// ROUTINGBOARD//////////////////////////////////////////////////
 
       TcpSocket p_tcpSocket = new TcpSocket();
       RoutingBoard recvBoard = null;
-      try{
+      try {
         Socket socket = new Socket();
         SocketAddress address = new InetSocketAddress("localhost", 1120);
         socket.connect(address);
@@ -360,148 +360,154 @@ public class MainApplication extends WindowBase {
 
         socket.close();
 
-
-      } catch (IOException e){
+      } catch (IOException e) {
         e.printStackTrace();
       }
 
-
-      if(recvBoard != null){
+      if (recvBoard != null) {
         new_frame.board_panel.board_handling.board = recvBoard;
         new_frame.board_panel.board_handling.remove_ratsnest(); // looks like caching the ratsnest is not necessary
-        // as a new instance is needed every time, i.e., remove/get ratsnest are called in pair
+        // as a new instance is needed every time, i.e., remove/get ratsnest are called
+        // in pair
         int incomplete_count_before = new_frame.board_panel.board_handling.get_ratsnest().incomplete_count();
         new_frame.repaint();
       }
 
-      
-
-      //////////////////////////////////ROUTINGBOARD  Serialize//////////////////////////////////////////////////
+      ////////////////////////////////// ROUTINGBOARD
+      ////////////////////////////////// Serialize//////////////////////////////////////////////////
 
       // byte[] byteBoard = null;
       // try {
-      //   java.io.ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
-      //   java.io.ObjectOutputStream object_stream = new java.io.ObjectOutputStream(output_stream);
-  
-      //   object_stream.writeObject(new_frame.board_panel.board_handling.board);
-      //   object_stream.close();
-  
-      //   byteBoard = output_stream.toByteArray();
+      // java.io.ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+      // java.io.ObjectOutputStream object_stream = new
+      // java.io.ObjectOutputStream(output_stream);
+
+      // object_stream.writeObject(new_frame.board_panel.board_handling.board);
+      // object_stream.close();
+
+      // byteBoard = output_stream.toByteArray();
       // } catch (Exception e) {
-      //   FRLogger.error("Couldn't serialize board", e);
+      // FRLogger.error("Couldn't serialize board", e);
       // }
 
+      ////////////////////////////////// ROUTINGBOARD
+      ////////////////////////////////// deSerialize//////////////////////////////////////////////////
 
+      // RoutingBoard routeboard = null;
+      // if(byteBoard != null){
+      // System.out.println(byteBoard.length);
+      // try {
+      // java.io.ByteArrayInputStream input_stream = new
+      // ByteArrayInputStream(byteBoard);
+      // java.io.ObjectInputStream object_stream = new
+      // java.io.ObjectInputStream(input_stream);
 
-      //////////////////////////////////ROUTINGBOARD  deSerialize//////////////////////////////////////////////////
+      // RoutingBoard recvboard = (RoutingBoard) object_stream.readObject();
 
+      // recvboard.set_test_level(TestLevel.RELEASE_VERSION); // test_level is
+      // transient
 
-    //   RoutingBoard routeboard = null;
-    //   if(byteBoard != null){
-    //     System.out.println(byteBoard.length);
-    //   try {
-    //     java.io.ByteArrayInputStream input_stream = new ByteArrayInputStream(byteBoard);
-    //     java.io.ObjectInputStream object_stream = new java.io.ObjectInputStream(input_stream);
-  
-    //     RoutingBoard recvboard = (RoutingBoard) object_stream.readObject();
+      // // board_copy.clear_autoroute_database();
+      // recvboard.clear_all_item_temporary_autoroute_data();
+      // recvboard.finish_autoroute();
 
-    //     recvboard.set_test_level(TestLevel.RELEASE_VERSION); // test_level is transient
-  
-    //     // board_copy.clear_autoroute_database();
-    //     recvboard.clear_all_item_temporary_autoroute_data();
-    //     recvboard.finish_autoroute();
+      // routeboard = recvboard;
+      // } catch (Exception e) {
+      // FRLogger.error("Couldn't deserialize board", e);
+      // }
 
-    //     routeboard =  recvboard;
-    //   } catch (Exception e) {
-    //     FRLogger.error("Couldn't deserialize board", e);
-    //   }
+      // }
+      // if(routeboard != null){
+      // System.out.println(routeboard.get_hash());
+      // }
 
-    // }
-    // if(routeboard != null){
-    //   System.out.println(routeboard.get_hash());
-    // }
+      ////////////////////////////////// Board
+      ////////////////////////////////// Trans//////////////////////////////////////////////////
 
+      // DesignFile design_file2 =
+      // DesignFile.get_instance(startupOptions.design_input_filename2, false);
+      // final BoardFrame new_frame2 =
+      // new BoardFrame(
+      // design_file2,
+      // board_option,
+      // TestLevel.RELEASE_VERSION,
+      // startupOptions.current_locale,
+      // !startupOptions.test_version_option,
+      // startupOptions.save_intermediate_stages,
+      // startupOptions.optimization_improvement_threshold);
 
-      //////////////////////////////////Board Trans//////////////////////////////////////////////////
+      // DsnFile.ReadResult read_result = null;
+      // read_result =
+      // new_frame2.board_panel.board_handling.import_design(
+      // design_file2.get_input_stream(), new_frame2.board_observers,
+      // new_frame2.item_id_no_generator, new_frame2.test_level);
+      // new_frame2.board_panel.board_handling.settings.autoroute_settings.set_stop_pass_no(
+      // new_frame2.board_panel.board_handling.settings.autoroute_settings.get_start_pass_no()
+      // + startupOptions.max_passes
+      // - 1);
+      // new_frame2.board_panel.board_handling.set_num_threads(startupOptions.num_threads);
+      // new_frame2.board_panel.board_handling.set_board_update_strategy(
+      // startupOptions.board_update_strategy);
+      // new_frame2.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
+      // new_frame2.board_panel.board_handling.set_item_selection_strategy(
+      // startupOptions.item_selection_strategy);
 
+      // new_frame.board_panel.board_handling.board =
+      // new_frame2.board_panel.board_handling.board;
+      // new_frame.board_panel.board_handling.settings =
+      // new_frame2.board_panel.board_handling.settings;
+      // new_frame.repaint();
 
-    // DesignFile design_file2 = DesignFile.get_instance(startupOptions.design_input_filename2, false);
-    // final BoardFrame new_frame2 =
-    // new BoardFrame(
-    //     design_file2,
-    //     board_option,
-    //     TestLevel.RELEASE_VERSION,
-    //     startupOptions.current_locale,
-    //     !startupOptions.test_version_option,
-    //     startupOptions.save_intermediate_stages,
-    //     startupOptions.optimization_improvement_threshold);
+      ////////////////////////////////// Add
+      ////////////////////////////////// Trace//////////////////////////////////////////////////
 
-    // DsnFile.ReadResult read_result = null;
-    // read_result =
-    //   new_frame2.board_panel.board_handling.import_design(
-    //       design_file2.get_input_stream(), new_frame2.board_observers, new_frame2.item_id_no_generator, new_frame2.test_level);
-    //       new_frame2.board_panel.board_handling.settings.autoroute_settings.set_stop_pass_no(
-    //         new_frame2.board_panel.board_handling.settings.autoroute_settings.get_start_pass_no()
-    //             + startupOptions.max_passes
-    //             - 1);
-    //     new_frame2.board_panel.board_handling.set_num_threads(startupOptions.num_threads);
-    //     new_frame2.board_panel.board_handling.set_board_update_strategy(
-    //         startupOptions.board_update_strategy);
-    //     new_frame2.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
-    //     new_frame2.board_panel.board_handling.set_item_selection_strategy(
-    //         startupOptions.item_selection_strategy);
+      // app.freerouting.board.RoutingBoard p_board =
+      // new_frame.board_panel.board_handling.deep_copy_routing_board();
+      // app.freerouting.geometry.planar.Point[] curr_corner_arr = new
+      // app.freerouting.geometry.planar.Point[3];
 
-    //   new_frame.board_panel.board_handling.board = new_frame2.board_panel.board_handling.board;
-      // new_frame.board_panel.board_handling.settings = new_frame2.board_panel.board_handling.settings;
-    //   new_frame.repaint();
+      // curr_corner_arr[0] =
+      // app.freerouting.geometry.planar.Point.get_instance(30354,-50000);
+      // curr_corner_arr[1] =
+      // app.freerouting.geometry.planar.Point.get_instance(24593,-50000);
+      // curr_corner_arr[2] =
+      // app.freerouting.geometry.planar.Point.get_instance(16634,-57959);
 
-
-
-
-      //////////////////////////////////Add Trace//////////////////////////////////////////////////
-
-
-
-      // app.freerouting.board.RoutingBoard p_board = new_frame.board_panel.board_handling.deep_copy_routing_board();
-      // app.freerouting.geometry.planar.Point[] curr_corner_arr = new app.freerouting.geometry.planar.Point[3];
-
-      // curr_corner_arr[0] = app.freerouting.geometry.planar.Point.get_instance(30354,-50000);
-      // curr_corner_arr[1] = app.freerouting.geometry.planar.Point.get_instance(24593,-50000);
-      // curr_corner_arr[2] = app.freerouting.geometry.planar.Point.get_instance(16634,-57959);
-
-      // app.freerouting.geometry.planar.Polyline insert_polyline = new app.freerouting.geometry.planar.Polyline(curr_corner_arr);
+      // app.freerouting.geometry.planar.Polyline insert_polyline = new
+      // app.freerouting.geometry.planar.Polyline(curr_corner_arr);
 
       // int[] a = {3};
       // app.freerouting.geometry.planar.Point ok_point =
       // p_board.insert_forced_trace_polyline(
-      //         insert_polyline,
-      //         500,
-      //         0,
-      //         a,
-      //         5,
-      //         20,
-      //         5,
-      //         5,
-      //         Integer.MAX_VALUE,
-      //         500,
-      //         true,
-      //         null);
+      // insert_polyline,
+      // 500,
+      // 0,
+      // a,
+      // 5,
+      // 20,
+      // 5,
+      // 5,
+      // Integer.MAX_VALUE,
+      // 500,
+      // true,
+      // null);
 
       // new_frame.board_panel.board_handling.board = p_board;
-      
+
       // new_frame.board_panel.repaint();
 
-      // start the auto-router automatically if both input and output files were passed as a
+      // start the auto-router automatically if both input and output files were
+      // passed as a
       // parameter
       if ((startupOptions.design_input_filename != null)
           && (startupOptions.design_output_filename != null)) {
-        InteractiveActionThread thread =
-            new_frame.board_panel.board_handling.start_batch_autorouter();
+        InteractiveActionThread thread = new_frame.board_panel.board_handling.start_batch_autorouter();
 
         thread.addListener(
             new ThreadActionListener() {
               @Override
-              public void autorouterStarted() {}
+              public void autorouterStarted() {
+              }
 
               @Override
               public void autorouterAborted() {
@@ -533,12 +539,10 @@ public class MainApplication extends WindowBase {
                       new_frame.board_panel.board_handling.export_specctra_session_file(
                           design_name, output_stream);
                     } else if (filename.toLowerCase().endsWith(".scr")) {
-                      java.io.ByteArrayOutputStream session_output_stream =
-                          new ByteArrayOutputStream();
+                      java.io.ByteArrayOutputStream session_output_stream = new ByteArrayOutputStream();
                       new_frame.board_panel.board_handling.export_specctra_session_file(
                           filename, session_output_stream);
-                      java.io.InputStream input_stream =
-                          new ByteArrayInputStream(session_output_stream.toByteArray());
+                      java.io.InputStream input_stream = new ByteArrayInputStream(session_output_stream.toByteArray());
                       new_frame.board_panel.board_handling.export_eagle_session_file(
                           input_stream, output_stream);
                     }
@@ -567,9 +571,9 @@ public class MainApplication extends WindowBase {
 
     FRLogger.traceExit("MainApplication.main()");
   }
-
   /**
-   * Creates a new board frame containing the data of the input design file. Returns null, if an
+   * Creates a new board frame containing the data of the input design file.
+   * Returns null, if an
    * error occurred.
    */
   private static BoardFrame create_board_frame(
@@ -582,8 +586,8 @@ public class MainApplication extends WindowBase {
       boolean p_save_intermediate_stages,
       float p_optimization_improvement_threshold,
       String[] p_ignore_net_classes_by_autorouter) {
-    java.util.ResourceBundle resources =
-        java.util.ResourceBundle.getBundle("app.freerouting.gui.MainApplication", p_locale);
+    java.util.ResourceBundle resources = java.util.ResourceBundle.getBundle("app.freerouting.gui.MainApplication",
+        p_locale);
 
     java.io.InputStream input_stream = p_design_file.get_input_stream();
     if (input_stream == null) {
@@ -599,36 +603,33 @@ public class MainApplication extends WindowBase {
     } else {
       test_level = TestLevel.RELEASE_VERSION;
     }
-    BoardFrame new_frame =
-        new BoardFrame(
-            p_design_file,
-            p_option,
-            test_level,
-            p_locale,
-            !p_is_test_version,
-            p_save_intermediate_stages,
-            p_optimization_improvement_threshold);
-    boolean read_ok = 
-        new_frame.read(input_stream, p_design_file.is_created_from_text_file(), p_message_field);
+    BoardFrame new_frame = new BoardFrame(
+        p_design_file,
+        p_option,
+        test_level,
+        p_locale,
+        !p_is_test_version,
+        p_save_intermediate_stages,
+        p_optimization_improvement_threshold);
+    boolean read_ok = new_frame.read(input_stream, p_design_file.is_created_from_text_file(), p_message_field);
     if (!read_ok) {
       return null;
     }
     new_frame.menubar.add_design_dependent_items();
     if (p_design_file.is_created_from_text_file()) {
-      // Read the file  with the saved rules, if it is existing.
+      // Read the file with the saved rules, if it is existing.
 
       String file_name = p_design_file.get_name();
       String[] name_parts = file_name.split("\\.");
 
       String design_name = name_parts[0];
-      if(name_parts.length > 1){
-        for(int i = 1; i < name_parts.length-1; i++){
+      if (name_parts.length > 1) {
+        for (int i = 1; i < name_parts.length - 1; i++) {
           design_name += '.';
           design_name += name_parts[i];
         }
       }
 
-      
       String parent_folder_name = null;
       String rules_file_name = null;
       String confirm_import_rules_message = null;
@@ -649,10 +650,9 @@ public class MainApplication extends WindowBase {
           p_option == BoardFrame.Option.WEBSTART,
           confirm_import_rules_message);
 
-          // ignore net classes if they were defined by a command line argument
+      // ignore net classes if they were defined by a command line argument
       for (String net_class_name : p_ignore_net_classes_by_autorouter) {
-        NetClasses netClasses =
-            new_frame.board_panel.board_handling.get_routing_board().rules.net_classes;
+        NetClasses netClasses = new_frame.board_panel.board_handling.get_routing_board().rules.net_classes;
 
         for (int i = 0; i < netClasses.count(); i++) {
           if (netClasses.get(i).get_name().compareToIgnoreCase(net_class_name) == 0) {
@@ -675,7 +675,7 @@ public class MainApplication extends WindowBase {
       message_field.setText(resources.getString("message_3"));
       return;
     }
-    
+
     FRLogger.info("Opening '" + design_file.get_name() + "'...");
 
     BoardFrame.Option option;
@@ -689,19 +689,17 @@ public class MainApplication extends WindowBase {
     WindowMessage welcome_window = WindowMessage.show(message);
     welcome_window.setTitle(message);
 
-    
-    BoardFrame new_frame =
-        create_board_frame(
-            design_file,
-            message_field,
-            option,
-            this.is_test_version,
-            this.locale,
-            null,
-            this.save_intermediate_stages,
-            this.optimization_improvement_threshold,
-            this.ignore_net_classes_by_autorouter);
- 
+    BoardFrame new_frame = create_board_frame(
+        design_file,
+        message_field,
+        option,
+        this.is_test_version,
+        this.locale,
+        null,
+        this.save_intermediate_stages,
+        this.optimization_improvement_threshold,
+        this.ignore_net_classes_by_autorouter);
+
     welcome_window.dispose();
     if (new_frame == null) {
       return;
@@ -711,12 +709,11 @@ public class MainApplication extends WindowBase {
             + this.max_passes
             - 1);
 
-    
-    new_frame.board_panel.board_handling.set_num_threads(this.num_threads);                           // 7
-    new_frame.board_panel.board_handling.set_board_update_strategy(this.board_update_strategy);       // Greedy
-    new_frame.board_panel.board_handling.set_hybrid_ratio(this.hybrid_ratio);                         //1:1
-    new_frame.board_panel.board_handling.set_item_selection_strategy(this.item_selection_strategy);   //prioritzed
-    
+    new_frame.board_panel.board_handling.set_num_threads(this.num_threads); // 7
+    new_frame.board_panel.board_handling.set_board_update_strategy(this.board_update_strategy); // Greedy
+    new_frame.board_panel.board_handling.set_hybrid_ratio(this.hybrid_ratio); // 1:1
+    new_frame.board_panel.board_handling.set_item_selection_strategy(this.item_selection_strategy); // prioritzed
+
     message_field.setText(
         resources.getString("message_4")
             + " "
@@ -732,7 +729,10 @@ public class MainApplication extends WindowBase {
     System.exit(0);
   }
 
-  /** deletes the setting stored by the user if the application is run by Java Web Start */
+  /**
+   * deletes the setting stored by the user if the application is run by Java Web
+   * Start
+   */
   private void restore_defaults_action(java.awt.event.ActionEvent evt) {
     // webstart is gone, nothing to do
     // TODO maybe add alternative
@@ -764,12 +764,11 @@ public class MainApplication extends WindowBase {
       setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       boolean exit_program = true;
       if (!is_test_version && board_frames.size() > 0) {
-        int option =
-            javax.swing.JOptionPane.showConfirmDialog(
-                null,
-                resources.getString("confirm_cancel"),
-                null,
-                javax.swing.JOptionPane.YES_NO_OPTION);
+        int option = javax.swing.JOptionPane.showConfirmDialog(
+            null,
+            resources.getString("confirm_cancel"),
+            null,
+            javax.swing.JOptionPane.YES_NO_OPTION);
         if (option == javax.swing.JOptionPane.NO_OPTION) {
           setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
           exit_program = false;

@@ -42,7 +42,7 @@ public class TargetItemExpansionDoor implements ExpandableObject {
 
   public boolean is_destination_door() {
     ItemAutorouteInfo item_info = this.item.get_autoroute_info();
-    return !item_info.is_start_info();
+    return !item_info.is_start_info() && item_info.is_dest_info();
   }
 
   public CompleteExpansionRoom other_room(CompleteExpansionRoom p_room) {

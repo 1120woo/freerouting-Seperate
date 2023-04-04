@@ -1,0 +1,56 @@
+2023-03-31 11:25:18.839 [main] INFO  Freerouting v1 (build-date: 140)
+2023-03-31 11:25:18.843 [main] DEBUG  Version: 1,140
+2023-03-31 11:25:18.844 [main] DEBUG  Command line arguments: ''
+2023-03-31 11:25:18.845 [main] DEBUG  Architecture: Windows 11,amd64,10.0
+2023-03-31 11:25:18.846 [main] DEBUG  Java: 17.0.6,Eclipse Adoptium
+2023-03-31 11:25:18.846 [main] DEBUG  System Language: ko,ko_KR
+2023-03-31 11:25:18.847 [main] DEBUG  Hardware: 16 CPU cores,3548 MB RAM
+2023-03-31 11:25:18.851 [main] DEBUG  UTC Time: 2023-03-31T02:25:18.848950500Z
+2023-03-31 11:25:18.857 [main] DEBUG  GUI Language: ko_KR
+2023-03-31 11:25:18.862 [main] INFO  Opening 'C:\Users\Hugo\Desktop\autoroute\Autorouter_PCB_STM32F103VE_Board-C.dsn'...
+2023-03-31 11:25:20.723 [main] INFO  Opening 'Autorouter_PCB_STM32F103VE_Board-C.rules'...
+2023-03-31 11:25:20.724 [main] ERROR File 'Autorouter_PCB_STM32F103VE_Board-C.rules' was not found.
+2023-03-31 11:25:20.808 [main] TRACE Method 'MainApplication.main()' was performed in 2.04 seconds.
+2023-03-31 11:25:21.909 [Thread-0] INFO  Starting auto-routing...
+2023-03-31 11:25:46.631 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #1 on board '857d7056a8c6d06ca771da5cc772cc83' making 520 changes' was performed in 24.60 seconds.
+2023-03-31 11:26:15.748 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #2 on board '523923e1f045700cfc20a7eb1f52dc4f' making 360 changes' was performed in 29.07 seconds.
+2023-03-31 11:26:39.394 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #3 on board 'd0bfb0d35131075be8e9727809bed0a8' making 336 changes' was performed in 23.59 seconds.
+2023-03-31 11:26:54.623 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #4 on board 'd6757406aa5ea765012971b4faa2898f' making 254 changes' was performed in 15.20 seconds.
+2023-03-31 11:27:08.796 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #5 on board 'a69c8a3f0433e0de5f0a313514168d00' making 190 changes' was performed in 14.14 seconds.
+2023-03-31 11:27:18.752 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #6 on board '9e99380f5018a4cd47b855f843750480' making 157 changes' was performed in 9.93 seconds.
+2023-03-31 11:27:24.217 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #7 on board 'fdc83f3b339e242146cdf8272ab87c70' making 102 changes' was performed in 5.44 seconds.
+2023-03-31 11:27:27.429 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #8 on board '10f268c9c5baba7849c2209a75ad70f8' making 68 changes' was performed in 3.19 seconds.
+2023-03-31 11:27:30.868 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #9 on board '6fef1eed71d31bc9f4d9f48dd66ec635' making 47 changes' was performed in 3.42 seconds.
+2023-03-31 11:27:32.823 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #10 on board '049e06b65aea7df90d0e7636c584e04c' making 50 changes' was performed in 1.92 seconds.
+2023-03-31 11:27:34.275 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #11 on board 'd570fa7c91c77f60606b5a6e9428ad0f' making 17 changes' was performed in 1.43 seconds.
+2023-03-31 11:27:36.843 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #12 on board '7f15b8146c45efa68a34240d2528e5aa' making 35 changes' was performed in 2.54 seconds.
+2023-03-31 11:27:38.436 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #13 on board '529cb3b5c3b561ae6aa68b45da18edfa' making 17 changes' was performed in 1.56 seconds.
+2023-03-31 11:27:39.293 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #14 on board '0b5639a93f427b3151b44cd4b52d9757' making 18 changes' was performed in 0.83 seconds.
+2023-03-31 11:27:41.013 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #15 on board '7b608f223e840c47835744717c96633a' making 17 changes' was performed in 1.70 seconds.
+2023-03-31 11:27:41.944 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #16 on board '66bb8e7e0367f6dc34669f47f094bf27' making 21 changes' was performed in 0.90 seconds.
+2023-03-31 11:27:43.751 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #17 on board 'cfb68ca8bc7e3dd2b7b583c537ef0da3' making 17 changes' was performed in 1.78 seconds.
+2023-03-31 11:27:44.827 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #18 on board '55d9323532978f968ee9c272e4a9c701' making 6 changes' was performed in 1.04 seconds.
+2023-03-31 11:27:46.186 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #19 on board 'bad1b69494f8bc73118cd7b142644718' making 20 changes' was performed in 1.33 seconds.
+2023-03-31 11:27:47.394 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #20 on board 'b6af97c2ce8e9b6f6ce6a6a5fbd6223a' making 18 changes' was performed in 1.18 seconds.
+2023-03-31 11:27:49.640 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #21 on board 'b659afc9425d2e61d404fdfec3b01e7a' making 18 changes' was performed in 2.22 seconds.
+2023-03-31 11:27:50.824 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #22 on board '2abe8fbf71df343c0b3039682078cbed' making 21 changes' was performed in 1.16 seconds.
+2023-03-31 11:27:52.896 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #23 on board '9c6993deca11a0ed5b10416e7cefa01b' making 21 changes' was performed in 2.04 seconds.
+2023-03-31 11:27:54.105 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #24 on board '15e665a24e851af26d5f39662afdca53' making 16 changes' was performed in 1.18 seconds.
+2023-03-31 11:27:56.606 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #25 on board '75e958c4660679a2e48b2d716543bae6' making 27 changes' was performed in 2.47 seconds.
+2023-03-31 11:27:56.660 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #26 on board '85a89d67e5178206e5bfcc5547120a9c' making 0 changes' was performed in 0.01 seconds.
+2023-03-31 11:27:56.661 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-autorouting' was performed in 2 minute(s) 34.75 seconds.
+2023-03-31 11:27:56.662 [Thread-0] INFO  Auto-routing was completed in 2 minute(s) 34.75 seconds.
+2023-03-31 11:27:56.662 [Thread-0] INFO  Starting route optimization on 1 thread...
+2023-03-31 11:33:56.519 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #1 with 246 vias and 35,443.69 trace length.' was performed in 5 minute(s) 59.85 seconds.
+2023-03-31 11:40:33.790 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-03-31 11:40:34.031 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-03-31 11:41:10.517 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #2 with 233 vias and 34,972.00 trace length.' was performed in 7 minute(s) 14.00 seconds.
+2023-03-31 11:45:47.625 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #3 with 214 vias and 35,115.38 trace length.' was performed in 4 minute(s) 37.11 seconds.
+2023-03-31 11:49:54.402 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #4 with 208 vias and 34,929.05 trace length.' was performed in 4 minute(s) 6.77 seconds.
+2023-03-31 11:53:50.280 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #5 with 207 vias and 34,812.78 trace length.' was performed in 3 minute(s) 55.88 seconds.
+2023-03-31 11:58:48.648 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #6 with 205 vias and 34,693.51 trace length.' was performed in 4 minute(s) 58.37 seconds.
+2023-03-31 12:02:53.437 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #7 with 205 vias and 34,510.40 trace length.' was performed in 4 minute(s) 4.79 seconds.
+2023-03-31 12:07:36.165 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #8 with 203 vias and 34,716.70 trace length.' was performed in 4 minute(s) 42.73 seconds.
+2023-03-31 12:07:36.167 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-routeoptimization' was performed in 39 minute(s) 39.50 seconds.
+2023-03-31 12:07:36.168 [Thread-0] INFO  Route optimization was completed in 39 minute(s) 39.50 seconds and it improved the design by ~51.07%.
+2023-03-31 12:07:36.192 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()' was performed in 42 minute(s) 14.28 seconds.
