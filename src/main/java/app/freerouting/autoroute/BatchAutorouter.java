@@ -1,5 +1,6 @@
 package app.freerouting.autoroute;
 
+import app.freerouting.board.Pin;
 import app.freerouting.board.BasicBoard;
 import app.freerouting.board.Connectable;
 import app.freerouting.board.DrillItem;
@@ -13,6 +14,7 @@ import app.freerouting.interactive.BoardHandling;
 import app.freerouting.interactive.InteractiveActionThread;
 import app.freerouting.logger.FRLogger;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,6 +25,7 @@ import java.util.TreeSet;
 
 /** Handles the sequencing of the batch autoroute passes. */
 public class BatchAutorouter {
+  LinkedHashMap<String, String> pinName = new LinkedHashMap<>();
   private static final int TIME_LIMIT_TO_PREVENT_ENDLESS_LOOP = 1000;
   private final InteractiveActionThread thread;
   private final BoardHandling hdlg;
@@ -50,6 +53,7 @@ public class BatchAutorouter {
         p_start_ripup_costs,
         null);
   }
+
   public BatchAutorouter(
       InteractiveActionThread p_thread,
       boolean p_remove_unconnected_vias,
@@ -58,20 +62,16 @@ public class BatchAutorouter {
       RoutingBoard updated_routing_board) {
     this.thread = p_thread;
     this.hdlg = p_thread.hdlg;
-    this.routing_board =
-        updated_routing_board != null ? updated_routing_board : this.hdlg.get_routing_board();
+    this.routing_board = updated_routing_board != null ? updated_routing_board : this.hdlg.get_routing_board();
     this.remove_unconnected_vias = p_remove_unconnected_vias;
     if (p_with_preferred_directions) {
       this.trace_cost_arr = this.hdlg.get_settings().autoroute_settings.get_trace_cost_arr();
     } else {
       // remove prefered direction
-      this.trace_cost_arr =
-          new AutorouteControl.ExpansionCostFactor[this.routing_board.get_layer_count()];
+      this.trace_cost_arr = new AutorouteControl.ExpansionCostFactor[this.routing_board.get_layer_count()];
       for (int i = 0; i < this.trace_cost_arr.length; ++i) {
-        double curr_min_cost =
-            this.hdlg.get_settings().autoroute_settings.get_preferred_direction_trace_costs(i);
-        this.trace_cost_arr[i] =
-            new AutorouteControl.ExpansionCostFactor(curr_min_cost, curr_min_cost);
+        double curr_min_cost = this.hdlg.get_settings().autoroute_settings.get_preferred_direction_trace_costs(i);
+        this.trace_cost_arr[i] = new AutorouteControl.ExpansionCostFactor(curr_min_cost, curr_min_cost);
       }
     }
 
@@ -80,9 +80,12 @@ public class BatchAutorouter {
   }
 
   /**
-   * Autoroutes ripup passes until the board is completed or the autorouter is stopped by the user,
-   * or if p_max_pass_count is exceeded. Is currently used in the optimize via batch pass. Returns
-   * the number of passes to complete the board or p_max_pass_count + 1, if the board is not
+   * Autoroutes ripup passes until the board is completed or the autorouter is
+   * stopped by the user,
+   * or if p_max_pass_count is exceeded. Is currently used in the optimize via
+   * batch pass. Returns
+   * the number of passes to complete the board or p_max_pass_count + 1, if the
+   * board is not
    * completed.
    */
   public static int autoroute_passes_for_optimizing_item(
@@ -91,9 +94,8 @@ public class BatchAutorouter {
       int p_ripup_costs,
       boolean p_with_prefered_directions,
       RoutingBoard updated_routing_board) {
-    BatchAutorouter router_instance =
-        new BatchAutorouter(
-            p_thread, true, p_with_prefered_directions, p_ripup_costs, updated_routing_board);
+    BatchAutorouter router_instance = new BatchAutorouter(
+        p_thread, true, p_with_prefered_directions, p_ripup_costs, updated_routing_board);
     boolean still_unrouted_items = true;
     int curr_pass_no = 1;
     while (still_unrouted_items
@@ -118,13 +120,13 @@ public class BatchAutorouter {
   }
 
   /**
-   * Autoroutes ripup passes until the board is completed or the autorouter is stopped by the user.
+   * Autoroutes ripup passes until the board is completed or the autorouter is
+   * stopped by the user.
    * Returns true if the board is completed.
    */
   public boolean autoroute_passes() {
-    java.util.ResourceBundle resources =
-        java.util.ResourceBundle.getBundle(
-            "app.freerouting.interactive.InteractiveState", hdlg.get_locale());
+    java.util.ResourceBundle resources = java.util.ResourceBundle.getBundle(
+        "app.freerouting.interactive.InteractiveState", hdlg.get_locale());
     boolean still_unrouted_items = true;
     int diffBetweenBoardsCheckSizeDefault = 20;
     int diffBetweenBoardsCheckSize = diffBetweenBoardsCheckSizeDefault;
@@ -136,7 +138,8 @@ public class BatchAutorouter {
 
       String current_board_hash = this.routing_board.get_hash();
       if (already_checked_board_hashes.contains(current_board_hash)) {
-        // This board was already evaluated, so we stop auto-router to avoid the endless loop
+        // This board was already evaluated, so we stop auto-router to avoid the endless
+        // loop
         thread.request_stop_auto_router();
         break;
       }
@@ -147,13 +150,12 @@ public class BatchAutorouter {
         break;
       }
 
-      String start_message =
-          resources.getString("batch_autorouter")
-              + " "
-              + resources.getString("stop_message")
-              + "        "
-              + resources.getString("autorouter_pass")
-              + curr_pass_no;
+      String start_message = resources.getString("batch_autorouter")
+          + " "
+          + resources.getString("stop_message")
+          + "        "
+          + resources.getString("autorouter_pass")
+          + curr_pass_no;
       hdlg.screen_messages.set_status_message(start_message);
 
       BasicBoard boardBefore = this.routing_board.clone();
@@ -167,7 +169,8 @@ public class BatchAutorouter {
       already_checked_board_hashes.add(this.routing_board.get_hash());
       still_unrouted_items = autoroute_pass(curr_pass_no, true);
 
-      // let's check if there was enough change in the last pass, because if it were little, so
+      // let's check if there was enough change in the last pass, because if it were
+      // little, so
       // should probably stop
       int newTraceDifferences = this.routing_board.diff_traces(boardBefore);
       diffBetweenBoards.add(newTraceDifferences);
@@ -219,7 +222,8 @@ public class BatchAutorouter {
   }
 
   /**
-   * Autoroutes one ripup pass of all items of the board. Returns false, if the board is already
+   * Autoroutes one ripup pass of all items of the board. Returns false, if the
+   * board is already
    * completely routed.
    */
   private boolean autoroute_pass(int p_pass_no, boolean p_with_screen_message) {
@@ -227,7 +231,7 @@ public class BatchAutorouter {
       Collection<Item> autoroute_item_list = new java.util.LinkedList<Item>();
       Set<Item> handled_items = new TreeSet<Item>();
       Iterator<UndoableObjects.UndoableObjectNode> it = routing_board.item_list.start_read_object();
-      for (; ; ) {
+      for (;;) {
         UndoableObjects.Storable curr_ob = routing_board.item_list.read_object(it);
         if (curr_ob == null) {
           break;
@@ -265,7 +269,32 @@ public class BatchAutorouter {
         hdlg.screen_messages.set_batch_autoroute_info(
             items_to_go_count, routed, ripped_item_count, not_found);
       }
-      for (Item curr_item : autoroute_item_list) {
+
+      pinName.put("3071", "2482");
+      pinName.put("3061", "3354");
+      pinName.put("3354", "3084");
+      pinName.put("2168", "3498");
+
+
+      System.out.println(autoroute_item_list.size());
+      Collection<Item> autoroute_item_Sortedlist = new java.util.LinkedList<Item>();
+      for(String name : pinName.keySet()){
+        for (Item curr_item : autoroute_item_list) {
+          if(curr_item instanceof Pin){
+            Pin curr_Pin = (Pin) curr_item;
+            if(curr_Pin.name().equals(name)){
+              autoroute_item_Sortedlist.add(curr_item);
+              autoroute_item_list.remove(curr_item);
+              break;
+            }
+          }
+        }
+      }
+      autoroute_item_Sortedlist.addAll(autoroute_item_list);
+      System.out.println(autoroute_item_Sortedlist.size());
+
+      
+      for (Item curr_item : autoroute_item_Sortedlist) {
         if (this.is_interrupted) {
           break;
         }
@@ -307,9 +336,6 @@ public class BatchAutorouter {
     }
   }
 
-
-
-  
   private void remove_tails(Item.StopConnectionOption p_stop_connection_option) {
     routing_board.start_marking_changed_area();
     routing_board.remove_trace_tails(-1, p_stop_connection_option);
@@ -337,13 +363,12 @@ public class BatchAutorouter {
       } else {
         curr_via_costs = hdlg.get_settings().autoroute_settings.get_via_costs();
       }
-      AutorouteControl autoroute_control =
-          new AutorouteControl(
-              this.routing_board,
-              p_route_net_no,
-              hdlg.get_settings(),
-              curr_via_costs,
-              this.trace_cost_arr);
+      AutorouteControl autoroute_control = new AutorouteControl(
+          this.routing_board,
+          p_route_net_no,
+          hdlg.get_settings(),
+          curr_via_costs,
+          this.trace_cost_arr);
       autoroute_control.ripup_allowed = true;
       autoroute_control.ripup_costs = this.start_ripup_costs * p_ripup_pass_no;
       autoroute_control.remove_unconnected_vias = this.remove_unconnected_vias;
@@ -355,6 +380,7 @@ public class BatchAutorouter {
       Set<Item> connected_set = p_item.get_connected_set(p_route_net_no);
       Set<Item> route_start_set;
       Set<Item> route_dest_set;
+
       if (contains_plane) {
         for (Item curr_item : connected_set) {
           if (curr_item instanceof app.freerouting.board.ConductionArea) {
@@ -370,20 +396,37 @@ public class BatchAutorouter {
         route_dest_set = connected_set;
       }
 
+      if (p_item instanceof Pin) {
+        Pin p_Pin = (Pin) p_item;
+        String name = p_Pin.name();
+          route_dest_set.clear();
+          route_dest_set.add(p_item);
+          for (Item curr_Item : p_item.get_unconnected_set(p_route_net_no)) {
+            if (curr_Item instanceof Pin) {
+              p_Pin = (Pin) curr_Item;
+              String name2 = p_Pin.name();
+              if (name2.equals(pinName.get(name))) {
+                route_start_set.clear();
+                route_start_set.add(curr_Item);
+                System.out.println(name+"    "+name2+"  set");
+                break;
+              }
+            }
+          }
+      }
+      
       calc_airline(route_start_set, route_dest_set);
       double max_milliseconds = 100000 * Math.pow(2, p_ripup_pass_no - 1);
       max_milliseconds = Math.min(max_milliseconds, Integer.MAX_VALUE);
       TimeLimit time_limit = new TimeLimit((int) max_milliseconds);
-      AutorouteEngine autoroute_engine =
-          routing_board.init_autoroute(
-              p_route_net_no,
-              autoroute_control.trace_clearance_class_no,
-              this.thread,
-              time_limit,
-              this.retain_autoroute_database);
-      AutorouteEngine.AutorouteResult autoroute_result =
-          autoroute_engine.autoroute_connection(
-              route_start_set, route_dest_set, autoroute_control, p_ripped_item_list);
+      AutorouteEngine autoroute_engine = routing_board.init_autoroute(
+          p_route_net_no,
+          autoroute_control.trace_clearance_class_no,
+          this.thread,
+          time_limit,
+          this.retain_autoroute_database);
+      AutorouteEngine.AutorouteResult autoroute_result = autoroute_engine.autoroute_connection(
+          route_start_set, route_dest_set, autoroute_control, p_ripped_item_list);
       if (autoroute_result == AutorouteEngine.AutorouteResult.ROUTED) {
         routing_board.opt_changed_area(
             new int[0],
@@ -393,10 +436,9 @@ public class BatchAutorouter {
             this.thread,
             TIME_LIMIT_TO_PREVENT_ENDLESS_LOOP);
       }
-      // app.freerouting.tests.Validate.check("Autoroute  ", hdlg.get_routing_board());
-      boolean result =
-          autoroute_result == AutorouteEngine.AutorouteResult.ROUTED
-              || autoroute_result == AutorouteEngine.AutorouteResult.ALREADY_CONNECTED;
+      // app.freerouting.tests.Validate.check("Autoroute ", hdlg.get_routing_board());
+      boolean result = autoroute_result == AutorouteEngine.AutorouteResult.ROUTED
+          || autoroute_result == AutorouteEngine.AutorouteResult.ALREADY_CONNECTED;
       return result;
     } catch (Exception e) {
       return false;
@@ -404,7 +446,8 @@ public class BatchAutorouter {
   }
 
   /**
-   * Returns the airline of the current autorouted connnection or null, if no such airline exists
+   * Returns the airline of the current autorouted connnection or null, if no such
+   * airline exists
    */
   public FloatLine get_air_line() {
     if (this.air_line == null) {
