@@ -1,11 +1,12 @@
 package app.freerouting.autoroute;
 
-import app.freerouting.board.Pin;
 import app.freerouting.board.BasicBoard;
 import app.freerouting.board.Connectable;
 import app.freerouting.board.DrillItem;
 import app.freerouting.board.Item;
+import app.freerouting.board.Pin;
 import app.freerouting.board.RoutingBoard;
+import app.freerouting.board.RoutingBoard.Pair;
 import app.freerouting.datastructures.TimeLimit;
 import app.freerouting.datastructures.UndoableObjects;
 import app.freerouting.geometry.planar.FloatLine;
@@ -13,8 +14,9 @@ import app.freerouting.geometry.planar.FloatPoint;
 import app.freerouting.interactive.BoardHandling;
 import app.freerouting.interactive.InteractiveActionThread;
 import app.freerouting.logger.FRLogger;
+
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -25,7 +27,6 @@ import java.util.TreeSet;
 
 /** Handles the sequencing of the batch autoroute passes. */
 public class BatchAutorouter {
-  LinkedHashMap<String, String> pinName = new LinkedHashMap<>();
   private static final int TIME_LIMIT_TO_PREVENT_ENDLESS_LOOP = 1000;
   private final InteractiveActionThread thread;
   private final BoardHandling hdlg;
@@ -168,7 +169,6 @@ public class BatchAutorouter {
               + "' making {} changes");
       already_checked_board_hashes.add(this.routing_board.get_hash());
       still_unrouted_items = autoroute_pass(curr_pass_no, true);
-
       // let's check if there was enough change in the last pass, because if it were
       // little, so
       // should probably stop
@@ -179,6 +179,8 @@ public class BatchAutorouter {
         diffBetweenBoards.removeFirst();
 
         OptionalDouble average = diffBetweenBoards.stream().mapToDouble(a -> a).average();
+
+
 
         if (average.getAsDouble() < 20.0) {
           FRLogger.warn(
@@ -261,7 +263,62 @@ public class BatchAutorouter {
         this.air_line = null;
         return false;
       }
-      int items_to_go_count = autoroute_item_list.size();
+
+      HashSet<String> nameset = new HashSet<String>();
+      Collection<Item> autoroute_item_Sortedlist = new java.util.LinkedList<Item>();
+      for(Pair pinPair : hdlg.get_routing_board().pinName){
+        loopPin:
+        for (Item curr_item : autoroute_item_list) {
+          if(curr_item instanceof Pin){
+            Pin curr_Pin = (Pin) curr_item;
+            if(curr_Pin.name().equals(pinPair.first)){
+              for(Item p_item : curr_item.get_unconnected_set(0)){
+                if(p_item instanceof Pin){
+                  Pin p_Pin = (Pin)p_item;
+                  if(p_Pin.name().equals(pinPair.second)){
+                    autoroute_item_Sortedlist.add(curr_item);
+                    if(!nameset.contains(pinPair.first)){
+                      nameset.add(pinPair.first);
+                    }
+                    else{
+                      nameset.add(pinPair.second);
+                    }
+                    break loopPin;
+                  }
+                }
+
+              }
+            }
+          }
+        }
+      }
+
+      HashSet<Item> tmpSet = new HashSet<Item>(autoroute_item_Sortedlist);
+
+      for (Item p : autoroute_item_list) {
+        if (!tmpSet.contains(p)) {
+          if (p instanceof Pin) {
+            Pin p_pin = (Pin) p;
+            if (!nameset.contains(p_pin.name())) {
+              int curr_net_no = p.get_net_no(0);
+              Set<Item> connected_set = p.get_connected_set(curr_net_no);
+              int net_item_count = routing_board.connectable_item_count(curr_net_no);
+              if ((connected_set.size() < net_item_count) && (!p.has_ignored_nets())) {
+                autoroute_item_Sortedlist.add(p);
+              }
+            }
+          } else {
+            int curr_net_no = p.get_net_no(0);
+            Set<Item> connected_set = p.get_connected_set(curr_net_no);
+            int net_item_count = routing_board.connectable_item_count(curr_net_no);
+            if ((connected_set.size() < net_item_count) && (!p.has_ignored_nets())) {
+              autoroute_item_Sortedlist.add(p);
+            }
+          }
+        }
+      }
+
+      int items_to_go_count = autoroute_item_Sortedlist.size();
       int ripped_item_count = 0;
       int not_found = 0;
       int routed = 0;
@@ -270,30 +327,7 @@ public class BatchAutorouter {
             items_to_go_count, routed, ripped_item_count, not_found);
       }
 
-      pinName.put("3071", "2482");
-      pinName.put("3061", "3354");
-      pinName.put("3354", "3084");
-      pinName.put("2168", "3498");
-
-
-      System.out.println(autoroute_item_list.size());
-      Collection<Item> autoroute_item_Sortedlist = new java.util.LinkedList<Item>();
-      for(String name : pinName.keySet()){
-        for (Item curr_item : autoroute_item_list) {
-          if(curr_item instanceof Pin){
-            Pin curr_Pin = (Pin) curr_item;
-            if(curr_Pin.name().equals(name)){
-              autoroute_item_Sortedlist.add(curr_item);
-              autoroute_item_list.remove(curr_item);
-              break;
-            }
-          }
-        }
-      }
-      autoroute_item_Sortedlist.addAll(autoroute_item_list);
-      System.out.println(autoroute_item_Sortedlist.size());
-
-      
+      LinkedList<Pair> pinPair = new LinkedList<Pair>(hdlg.get_routing_board().pinName);
       for (Item curr_item : autoroute_item_Sortedlist) {
         if (this.is_interrupted) {
           break;
@@ -305,7 +339,7 @@ public class BatchAutorouter {
           }
           routing_board.start_marking_changed_area();
           SortedSet<Item> ripped_item_list = new TreeSet<Item>();
-          if (autoroute_item(curr_item, curr_item.get_net_no(i), ripped_item_list, p_pass_no)) {
+          if (autoroute_item(curr_item, curr_item.get_net_no(i), ripped_item_list, pinPair, p_pass_no)) {
             ++routed;
             hdlg.repaint();
           } else {
@@ -349,7 +383,7 @@ public class BatchAutorouter {
   }
 
   private boolean autoroute_item(
-      Item p_item, int p_route_net_no, SortedSet<Item> p_ripped_item_list, int p_ripup_pass_no) {
+      Item p_item, int p_route_net_no, SortedSet<Item> p_ripped_item_list,LinkedList<Pair> p_pinPairs, int p_ripup_pass_no) {
     try {
       boolean contains_plane = false;
       app.freerouting.rules.Net route_net = routing_board.rules.nets.get(p_route_net_no);
@@ -363,15 +397,6 @@ public class BatchAutorouter {
       } else {
         curr_via_costs = hdlg.get_settings().autoroute_settings.get_via_costs();
       }
-      AutorouteControl autoroute_control = new AutorouteControl(
-          this.routing_board,
-          p_route_net_no,
-          hdlg.get_settings(),
-          curr_via_costs,
-          this.trace_cost_arr);
-      autoroute_control.ripup_allowed = true;
-      autoroute_control.ripup_costs = this.start_ripup_costs * p_ripup_pass_no;
-      autoroute_control.remove_unconnected_vias = this.remove_unconnected_vias;
 
       Set<Item> unconnected_set = p_item.get_unconnected_set(p_route_net_no);
       if (unconnected_set.size() == 0) {
@@ -395,26 +420,63 @@ public class BatchAutorouter {
         route_start_set = unconnected_set;
         route_dest_set = connected_set;
       }
-
+      int direction = 0;;
       if (p_item instanceof Pin) {
         Pin p_Pin = (Pin) p_item;
         String name = p_Pin.name();
+        HashSet<Integer> idxs = new HashSet<Integer>();
+        for (Pair pinPair : p_pinPairs) {
+          if (pinPair.first.equals(name)) {
+            idxs.add(p_pinPairs.indexOf(pinPair));
+          }
+        }
+        if (idxs.size() > 0) {
           route_dest_set.clear();
           route_dest_set.add(p_item);
+          // route_dest_set = p_item.get_connected_set(p_route_net_no);
+
+          // System.out.print(name + "<- dest ");
+          finddest:
+          for (int idx : idxs) {
           for (Item curr_Item : p_item.get_unconnected_set(p_route_net_no)) {
             if (curr_Item instanceof Pin) {
               p_Pin = (Pin) curr_Item;
               String name2 = p_Pin.name();
-              if (name2.equals(pinName.get(name))) {
-                route_start_set.clear();
-                route_start_set.add(curr_Item);
-                System.out.println(name+"    "+name2+"  set");
-                break;
+                if (name2.equals(p_pinPairs.get(idx).second)) {
+                  direction = p_pinPairs.get(idx).rev;
+                  p_pinPairs.remove(idx);
+                  route_start_set.clear();
+                  route_start_set.add(curr_Item);
+                  // System.out.println("start -> " + name2 + " set");
+                  break finddest;
+                }
               }
             }
           }
+        }
       }
-      
+
+      AutorouteControl.ExpansionCostFactor[] _trace_cost_arr = new AutorouteControl.ExpansionCostFactor[this.routing_board.get_layer_count()];
+      for(int i = 0; i < _trace_cost_arr.length; i++){
+        _trace_cost_arr[i] = new AutorouteControl.ExpansionCostFactor(this.trace_cost_arr[i].horizontal, this.trace_cost_arr[i].vertical);
+      }
+      if(direction == 1){
+        for(int i = 0; i < _trace_cost_arr.length; i++){
+          _trace_cost_arr[i].swap_factor();
+        }
+      }
+
+      AutorouteControl autoroute_control = new AutorouteControl(
+          this.routing_board,
+          p_route_net_no,
+          hdlg.get_settings(),
+          curr_via_costs,
+          _trace_cost_arr);
+      autoroute_control.ripup_allowed = true;
+      autoroute_control.ripup_costs = this.start_ripup_costs * p_ripup_pass_no;
+      autoroute_control.remove_unconnected_vias = this.remove_unconnected_vias;
+
+
       calc_airline(route_start_set, route_dest_set);
       double max_milliseconds = 100000 * Math.pow(2, p_ripup_pass_no - 1);
       max_milliseconds = Math.min(max_milliseconds, Integer.MAX_VALUE);

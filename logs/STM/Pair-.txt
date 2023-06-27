@@ -1,0 +1,89 @@
+2023-04-06 18:18:28.953 [main] INFO  Freerouting v1 (build-date: 140)
+2023-04-06 18:18:28.956 [main] DEBUG  Version: 1,140
+2023-04-06 18:18:28.957 [main] DEBUG  Command line arguments: ''
+2023-04-06 18:18:28.957 [main] DEBUG  Architecture: Windows 11,amd64,10.0
+2023-04-06 18:18:28.958 [main] DEBUG  Java: 17.0.6,Eclipse Adoptium
+2023-04-06 18:18:28.959 [main] DEBUG  System Language: ko,ko_KR
+2023-04-06 18:18:28.959 [main] DEBUG  Hardware: 16 CPU cores,3548 MB RAM
+2023-04-06 18:18:28.962 [main] DEBUG  UTC Time: 2023-04-06T09:18:28.959891Z
+2023-04-06 18:18:28.966 [main] DEBUG  GUI Language: ko_KR
+2023-04-06 18:18:28.971 [main] INFO  Opening 'C:\Users\Hugo\Desktop\autoroute\Autorouter_PCB_STM32F103VE_Board.dsn'...
+2023-04-06 18:18:31.051 [main] INFO  Opening 'Autorouter_PCB_STM32F103VE_Board.rules'...
+2023-04-06 18:18:31.054 [main] ERROR File 'Autorouter_PCB_STM32F103VE_Board.rules' was not found.
+2023-04-06 18:18:31.089 [main] TRACE Method 'MainApplication.main()' was performed in 2.20 seconds.
+2023-04-06 18:18:39.175 [Thread-0] INFO  Starting auto-routing...
+2023-04-06 18:19:08.721 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #1 on board 'c912fe42ea56a1f93d9b85b70df4b1a4' making 464 changes' was performed in 29.42 seconds.
+2023-04-06 18:19:29.289 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #2 on board '0e2d63fd8a6892adf69db673fa5ba06b' making 358 changes' was performed in 20.52 seconds.
+2023-04-06 18:19:47.515 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #3 on board '55db48be75822f1dad52cab9cbd10194' making 244 changes' was performed in 18.18 seconds.
+2023-04-06 18:19:58.665 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #4 on board '087edac9674752cd27ed5ce00aabe185' making 209 changes' was performed in 11.13 seconds.
+2023-04-06 18:20:09.785 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #5 on board '2f8c62db1001f1c5449ad7909e8457b9' making 197 changes' was performed in 11.10 seconds.
+2023-04-06 18:20:13.410 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #6 on board '278ad5389df92d420bf5fb41e1aabf27' making 75 changes' was performed in 3.59 seconds.
+2023-04-06 18:20:17.878 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #7 on board 'ee351ba9e2f38a65cba5bc827a4af326' making 99 changes' was performed in 4.45 seconds.
+2023-04-06 18:20:19.242 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #8 on board '29470cbc0bc14bc98e06686888a9c12a' making 27 changes' was performed in 1.34 seconds.
+2023-04-06 18:20:20.930 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #9 on board '88a5fd99197f3da44ca3eef83b106018' making 39 changes' was performed in 1.67 seconds.
+2023-04-06 18:20:22.542 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #10 on board 'f6ed5414fab07d62090958a29ced763b' making 45 changes' was performed in 1.59 seconds.
+2023-04-06 18:20:23.863 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #11 on board 'e874a719d6682e404dbbb7cf5a80a6ca' making 32 changes' was performed in 1.29 seconds.
+2023-04-06 18:20:23.906 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #12 on board 'ffee75c2a8f5d063cb1ff47a35502640' making 0 changes' was performed in 0.01 seconds.
+2023-04-06 18:20:23.907 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-autorouting' was performed in 1 minute(s) 44.73 seconds.
+2023-04-06 18:20:23.908 [Thread-0] INFO  Auto-routing was completed in 1 minute(s) 44.73 seconds.
+2023-04-06 18:20:23.909 [Thread-0] INFO  Starting route optimization on 1 thread...
+2023-04-06 18:22:09.498 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.503 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.507 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.517 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.519 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.532 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.556 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.561 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.568 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.569 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.570 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.578 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.589 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.599 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.626 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.642 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.660 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.723 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.725 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.777 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:22:09.786 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.746 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.751 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.752 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.757 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.765 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.771 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.772 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.775 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.787 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.792 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.797 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.800 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.805 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.807 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.809 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.815 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.830 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.854 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.881 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.882 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.893 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.894 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.905 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.947 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.948 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:11.954 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:12.002 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:12.004 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:23:12.012 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:24:41.060 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:24:55.704 [Thread-0] WARN  border_intersections: intersection_count (2) is too big!
+2023-04-06 18:25:02.594 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #1 with 187 vias and 37,678.79 trace length.' was performed in 4 minute(s) 38.68 seconds.
+2023-04-06 18:29:14.993 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #2 with 167 vias and 36,983.31 trace length.' was performed in 4 minute(s) 12.40 seconds.
+2023-04-06 18:32:35.702 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #3 with 149 vias and 36,942.88 trace length.' was performed in 3 minute(s) 20.71 seconds.
+2023-04-06 18:35:48.173 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #4 with 146 vias and 36,970.45 trace length.' was performed in 3 minute(s) 12.47 seconds.
+2023-04-06 18:39:02.347 [Thread-0] TRACE Method 'BatchOptRoute.opt_route_pass #5 with 142 vias and 36,769.06 trace length.' was performed in 3 minute(s) 14.17 seconds.
+2023-04-06 18:39:02.348 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-routeoptimization' was performed in 18 minute(s) 38.44 seconds.
+2023-04-06 18:39:02.350 [Thread-0] INFO  Route optimization was completed in 18 minute(s) 38.44 seconds and it improved the design by ~51.25%.
+2023-04-06 18:39:02.375 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()' was performed in 20 minute(s) 23.20 seconds.

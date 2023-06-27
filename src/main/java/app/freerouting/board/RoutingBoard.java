@@ -22,9 +22,9 @@ import app.freerouting.logger.FRLogger;
 import app.freerouting.rules.BoardRules;
 import app.freerouting.rules.ViaInfo;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,6 +39,7 @@ public class RoutingBoard extends BasicBoard implements java.io.Serializable {
   private transient AutorouteEngine autoroute_engine = null;
   private transient Item shove_failing_obstacle = null;
   private transient int shove_failing_layer = -1;
+  public LinkedList<Pair> pinName = new LinkedList<>();
 
   /**
    * Creates a new instance of a routing Board with surrounding box p_bounding_box
@@ -1020,38 +1021,6 @@ public class RoutingBoard extends BasicBoard implements java.io.Serializable {
       return AutorouteEngine.AutorouteResult.ALREADY_CONNECTED; // p_item is already routed.
     }
 
-
-    LinkedHashMap<String, String> pinName = new LinkedHashMap<>();
-
-    pinName.put("3071", "2482");
-    pinName.put("3061", "3354");
-    pinName.put("3354", "3084");
-    pinName.put("2168", "3498");
-
-    pinName.put("3471", "2168");
-    pinName.put("3498", "2168");
-    pinName.put("3461", "2168");
-
-    // pinName.put("3471", "3461");
-
-    if (p_item instanceof Pin) {
-      Pin p_Pin = (Pin) p_item;
-      String name = p_Pin.name();
-        route_dest_set.clear();
-        route_dest_set.add(p_item);
-        for (Item curr_Item : p_item.get_unconnected_set(route_net_no)) {
-          if (curr_Item instanceof Pin) {
-            p_Pin = (Pin) curr_Item;
-            String name2 = p_Pin.name();
-            if (name2.equals(pinName.get(name))) {
-              route_start_set.clear();
-              route_start_set.add(curr_Item);
-              System.out.println(name+"<- dest  start ->  "+name2+"  set");
-              break;
-            }
-          }
-        }
-    }
     SortedSet<Item> ripped_item_list = new TreeSet<Item>();
     AutorouteEngine curr_autoroute_engine = init_autoroute(
         p_item.get_net_no(0),
@@ -1433,4 +1402,39 @@ public class RoutingBoard extends BasicBoard implements java.io.Serializable {
       this.autoroute_engine = null;
     }
   }
+
+public static class Pair implements java.io.Serializable {
+  public String first;
+  public String second;
+  public int rev = 0;
+
+  public Pair(String first, String second) {
+      this.first = first;
+      this.second = second;
+  }
+
+  public Pair(String first, String second, int rev){
+      this.first = first;
+      this.second = second;
+      this.rev = rev;
+  }
+
+  @Override
+  public int hashCode() {
+      return Objects.hash(first, second);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+      if (this == obj) {
+          return true;
+      }
+      if (obj == null || getClass() != obj.getClass()) {
+          return false;
+      }
+      Pair pair = (Pair) obj;
+      return Objects.equals(first, pair.first) &&
+              Objects.equals(second, pair.second);
+  }
+}
 }

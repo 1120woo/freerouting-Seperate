@@ -281,7 +281,6 @@ public class BatchOptRouteMT extends BatchOptRoute {
     boolean interrupted = false;
 
     try {
-      int i = 0;
       while (!pool.awaitTermination(1, TimeUnit.SECONDS)) {
         FRLogger.debug(
             "Running route optimizer on "

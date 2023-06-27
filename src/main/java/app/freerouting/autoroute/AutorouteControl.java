@@ -187,12 +187,19 @@ public class AutorouteControl {
   public static class ExpansionCostFactor {
 
     /** The horizontal expansion cost factor on a layer of the board */
-    public final double horizontal;
+    public double horizontal;
     /** The vertical expansion cost factor on a layer of the board */
-    public final double vertical;
+    public double vertical;
     public ExpansionCostFactor(double p_horizontal, double p_vertical) {
       horizontal = p_horizontal;
       vertical = p_vertical;
+    }
+
+    public void swap_factor(){
+      double d_tmp = horizontal;
+
+      horizontal = vertical;
+      vertical = d_tmp;
     }
   }
 

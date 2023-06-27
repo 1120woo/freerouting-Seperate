@@ -33,7 +33,6 @@ public class OptimizeRouteTask extends BatchOptRoute implements Runnable {
   }
 
   private Item findItemOnBoard(int item_id) {
-    boolean found = false;
 
     Iterator<UndoableObjectNode> it = this.routing_board.item_list.start_read_object();
 

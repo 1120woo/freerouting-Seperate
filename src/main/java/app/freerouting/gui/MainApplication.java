@@ -3,6 +3,7 @@ package app.freerouting.gui;
 import app.freerouting.autoroute.BoardUpdateStrategy;
 import app.freerouting.autoroute.ItemSelectionStrategy;
 import app.freerouting.board.TestLevel;
+import app.freerouting.board.RoutingBoard.Pair;
 import app.freerouting.board.RoutingBoard;
 import app.freerouting.designforms.specctra.DsnFile;
 import app.freerouting.datastructures.UndoableObjects;
@@ -12,9 +13,11 @@ import app.freerouting.interactive.ThreadActionListener;
 import app.freerouting.logger.FRLogger;
 import app.freerouting.rules.NetClasses;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
@@ -308,6 +311,29 @@ public class MainApplication extends WindowBase {
       new_frame.board_panel.board_handling.set_hybrid_ratio(startupOptions.hybrid_ratio);
       new_frame.board_panel.board_handling.set_item_selection_strategy(
           startupOptions.item_selection_strategy);
+
+
+
+      LinkedList<Pair> pinName = new_frame.board_panel.board_handling.get_routing_board().pinName;
+
+      String filePath = "C:\\Users\\Hugo\\Desktop\\LUXROBO\\EDA\\freerouting-1.7.0\\freerouting-Seperate\\routeseq\\RouteSeq.txt";
+      try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] tokens = line.split(" ");
+            String firstString = tokens[0];
+            String secondString = tokens[1];
+            int rev = Integer.valueOf(tokens[2]);
+
+            Pair p_Pair = new Pair(firstString, secondString, rev);
+            pinName.add(p_Pair);
+        }
+      }catch (Exception e) {
+
+      }
+      System.out.println(pinName.size()); 
+
+
       // new_frame.dispose();
 
       ////////////////////////////////// NONGUINONGUINONGUI//////////////////////////////////////////////////

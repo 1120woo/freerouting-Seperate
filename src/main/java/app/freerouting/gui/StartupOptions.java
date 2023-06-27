@@ -17,7 +17,7 @@ public class StartupOptions {
 
   String design_input_filename2 = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_EDA_BLEdimmer_2023-02-17.dsn";
   // String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_STM32F103VE_Board_JX V1.0-PCB nonroute_2023-02-16.dsn";
-  String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_STM32F103VE_Board-C.dsn";
+  String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_STM32F103VE_Board.dsn";
   // String design_input_filename = "C:\\Users\\Hugo\\Desktop\\autoroute\\PCB_STM_Kicad.dsn";
 
   // String design_input_filename2 = "C:\\Users\\Hugo\\Desktop\\autoroute\\Autorouter_PCB_test_2023-03-21.dsn";

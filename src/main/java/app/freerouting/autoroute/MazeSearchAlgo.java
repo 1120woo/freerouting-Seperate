@@ -1047,7 +1047,6 @@ public class MazeSearchAlgo {
         }
         
         if(curr_door.item.is_autoroute_info()&&!curr_door.item.get_autoroute_info().is_start_info()){
-          System.out.println(":AAAA");
           continue;
         }
 
