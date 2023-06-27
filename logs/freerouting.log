@@ -1527,3 +1527,38 @@ java.io.StreamCorruptedException: invalid handle value: 00000000
 	at app.freerouting.interactive.BoardHandling.read_design(BoardHandling.java:790) ~[main/:?]
 	at app.freerouting.gui.RouteApp.main(RouteApp.java:66) ~[main/:?]
 2023-06-27 17:17:28.623 [main] TRACE Method 'MainApplication.main()' was performed in 16.08 seconds.
+2023-06-27 18:04:03.650 [main] INFO  Freerouting v1 (build-date: 140)
+2023-06-27 18:04:03.654 [main] DEBUG  Version: 1,140
+2023-06-27 18:04:03.655 [main] DEBUG  Command line arguments: ''
+2023-06-27 18:04:03.655 [main] DEBUG  Architecture: Windows 11,amd64,10.0
+2023-06-27 18:04:03.657 [main] DEBUG  Java: 17.0.6,Eclipse Adoptium
+2023-06-27 18:04:03.658 [main] DEBUG  System Language: ko,ko_KR
+2023-06-27 18:04:03.659 [main] DEBUG  Hardware: 16 CPU cores,3548 MB RAM
+2023-06-27 18:04:03.663 [main] DEBUG  UTC Time: 2023-06-27T09:04:03.659553300Z
+2023-06-27 18:04:03.669 [main] DEBUG  GUI Language: ko_KR
+2023-06-27 18:04:03.676 [main] INFO  Opening 'dsnfiles\Autorouter_PCB_STM32F103VE_Board.dsn'...
+2023-06-27 18:04:06.224 [main] INFO  Opening 'Autorouter_PCB_STM32F103VE_Board.rules'...
+2023-06-27 18:04:06.226 [main] ERROR File 'Autorouter_PCB_STM32F103VE_Board.rules' was not found.
+2023-06-27 18:04:06.497 [main] TRACE Method 'MainApplication.main()' was performed in 2.95 seconds.
+2023-06-27 18:04:13.315 [Thread-0] INFO  Starting auto-routing...
+2023-06-27 18:04:20.849 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #1 on board 'c912fe42ea56a1f93d9b85b70df4b1a4' making 295 changes' was performed in 7.41 seconds.
+2023-06-27 18:04:20.953 [Thread-0] TRACE Method 'BatchAutorouter.autoroute_pass #2 on board 'c4c0ce19562a81825ae4f36ee2624649' making 0 changes' was performed in 0.06 seconds.
+2023-06-27 18:04:20.958 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-autorouting' was performed in 7.64 seconds.
+2023-06-27 18:04:20.960 [Thread-0] INFO  Auto-routing was completed in 7.64 seconds.
+2023-06-27 18:04:20.961 [Thread-0] INFO  Starting route optimization on 1 thread...
+2023-06-27 18:04:20.962 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()-routeoptimization' was performed in 0.00 seconds.
+2023-06-27 18:04:20.964 [Thread-0] INFO  Route optimization was completed in 0.00 seconds.
+2023-06-27 18:04:20.987 [Thread-0] TRACE Method 'BatchAutorouterThread.thread_action()' was performed in 7.67 seconds.
+2023-06-27 18:08:16.527 [main] INFO  Freerouting v1 (build-date: 140)
+2023-06-27 18:08:16.529 [main] DEBUG  Version: 1,140
+2023-06-27 18:08:16.530 [main] DEBUG  Command line arguments: ''
+2023-06-27 18:08:16.531 [main] DEBUG  Architecture: Windows 11,amd64,10.0
+2023-06-27 18:08:16.532 [main] DEBUG  Java: 17.0.6,Eclipse Adoptium
+2023-06-27 18:08:16.534 [main] DEBUG  System Language: ko,ko_KR
+2023-06-27 18:08:16.535 [main] DEBUG  Hardware: 16 CPU cores,3548 MB RAM
+2023-06-27 18:08:16.538 [main] DEBUG  UTC Time: 2023-06-27T09:08:16.536315100Z
+2023-06-27 18:08:16.541 [main] DEBUG  GUI Language: ko_KR
+2023-06-27 18:08:16.547 [main] INFO  Opening 'dsnfiles\Autorouter_PCB_STM32F103VE_Board.dsn'...
+2023-06-27 18:08:18.831 [main] INFO  Opening 'Autorouter_PCB_STM32F103VE_Board.rules'...
+2023-06-27 18:08:18.833 [main] ERROR File 'Autorouter_PCB_STM32F103VE_Board.rules' was not found.
+2023-06-27 18:08:18.927 [main] TRACE Method 'MainApplication.main()' was performed in 2.50 seconds.

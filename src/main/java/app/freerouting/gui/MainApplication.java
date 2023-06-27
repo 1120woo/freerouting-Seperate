@@ -316,7 +316,7 @@ public class MainApplication extends WindowBase {
 
       LinkedList<Pair> pinName = new_frame.board_panel.board_handling.get_routing_board().pinName;
 
-      String filePath = "C:\\Users\\Hugo\\Desktop\\LUXROBO\\EDA\\freerouting-1.7.0\\freerouting-Seperate\\routeseq\\RouteSeq.txt";
+      String filePath = "routeseq\\RouteSeq.txt";
       try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
         String line;
         while ((line = br.readLine()) != null) {
